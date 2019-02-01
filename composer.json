@@ -1,0 +1,26 @@
+{
+  "name": "rezsolt/symfony-api-platform-maker-bundle",
+  "description": "ApiPlatformMakerBundle for Symfony",
+  "type": "symfony-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Zsolt Restyanszki",
+      "email": "rezsolt@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^7.1.3",
+    "symfony/framework-bundle": "^3.4|^4.0",
+    "symfony/http-kernel": "^3.4|^4.0",
+    "symfony/maker-bundle": "^1.11"
+  },
+  "autoload": {
+    "psr-4": {
+      "Rezsolt\\ApiPlatformMakerBundle\\": "src/"
+    }
+  },
+  "require-dev": {
+    "symfony/phpunit-bridge": "^4.2"
+  }
+}
