@@ -14,7 +14,7 @@ namespace Rezsolt\ApiPlatformMakerBundle\Entity\OpenApi\Components\Schemas;
 use Rezsolt\ApiPlatformMakerBundle\Entity\CollectionInterface;
 use Rezsolt\ApiPlatformMakerBundle\Entity\OpenApi\Components\Schemas\Properties\Property;
 
-class Properties extends \ArrayIterator implements CollectionInterface
+final class Properties extends \ArrayIterator implements CollectionInterface
 {
     /**
      * Properties constructor.

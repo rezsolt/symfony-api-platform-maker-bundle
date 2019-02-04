@@ -11,7 +11,7 @@
 
 namespace Rezsolt\ApiPlatformMakerBundle\Entity\OpenApi;
 
-class Info
+final class Info
 {
     private $title;
     private $version;

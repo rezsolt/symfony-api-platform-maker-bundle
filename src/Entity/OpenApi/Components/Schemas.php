@@ -14,7 +14,7 @@ namespace Rezsolt\ApiPlatformMakerBundle\Entity\OpenApi\Components;
 use Rezsolt\ApiPlatformMakerBundle\Entity\CollectionInterface;
 use Rezsolt\ApiPlatformMakerBundle\Entity\OpenApi\Components\Schemas\Schema;
 
-class Schemas extends \ArrayIterator implements CollectionInterface
+final class Schemas extends \ArrayIterator implements CollectionInterface
 {
     /**
      * Schemas constructor.

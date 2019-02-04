@@ -11,7 +11,7 @@
 
 namespace Rezsolt\ApiPlatformMakerBundle\Entity\OpenApi\Components\Schemas\Properties;
 
-class Property
+final class Property
 {
     /**
      * @var string

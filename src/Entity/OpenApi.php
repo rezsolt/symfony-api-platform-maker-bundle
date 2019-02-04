@@ -15,7 +15,7 @@ use Rezsolt\ApiPlatformMakerBundle\Entity\OpenApi\Components;
 use Rezsolt\ApiPlatformMakerBundle\Entity\OpenApi\Info;
 use Rezsolt\ApiPlatformMakerBundle\Entity\OpenApi\Paths;
 
-class OpenApi
+final class OpenApi
 {
     /**
      * @var string

@@ -11,7 +11,7 @@
 
 namespace Rezsolt\ApiPlatformMakerBundle\Entity\OpenApi\Components\Schemas;
 
-class Schema
+final class Schema
 {
     /**
      * @var string

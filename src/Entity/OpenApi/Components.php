@@ -13,7 +13,7 @@ namespace Rezsolt\ApiPlatformMakerBundle\Entity\OpenApi;
 
 use Rezsolt\ApiPlatformMakerBundle\Entity\OpenApi\Components\Schemas;
 
-class Components
+final class Components
 {
     /**
      * @var Schemas

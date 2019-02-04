@@ -11,8 +11,7 @@
 
 namespace Rezsolt\ApiPlatformMakerBundle\Entity\OpenApi;
 
-
-class Paths
+final class Paths
 {
     // @TODO childe nodes of Paths
 }
