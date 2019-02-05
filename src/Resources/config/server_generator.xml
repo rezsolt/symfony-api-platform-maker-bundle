@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="api_platform_maker.generator.open_api_entity"
+                 class="Rezsolt\ApiPlatformMakerBundle\Generator\OpenApiEntityGenerator">
+            <argument id="maker.generator" type="service"/>
+        </service>
+
+        <service id="api_platform_maker.generator.open_api_server"
+                 class="Rezsolt\ApiPlatformMakerBundle\Generator\OpenApiServerGenerator" public="true">
+            <argument id="api_platform_maker.generator.open_api_entity" type="service"/>
+        </service>
+
+    </services>
+
+</container>

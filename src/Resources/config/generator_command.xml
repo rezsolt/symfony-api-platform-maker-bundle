@@ -5,12 +5,15 @@
 
     <services>
 
-        <service id="api_platform_maker.normalizer.collection_denormalizer" class="Rezsolt\ApiPlatformMakerBundle\Normalizer\CollectionDenormalizer">
+        <service id="api_platform_maker.normalizer.collection_denormalizer"
+                 class="Rezsolt\ApiPlatformMakerBundle\Normalizer\CollectionDenormalizer">
             <tag name="serializer.normalizer"/>
         </service>
 
-        <service id="api_platform_maker.generator.command" class="Rezsolt\ApiPlatformMakerBundle\Command\GeneratorCommand">
+        <service id="api_platform_maker.generator.command"
+                 class="Rezsolt\ApiPlatformMakerBundle\Command\GeneratorCommand">
             <argument type="service" id="serializer" />
+            <argument id="api_platform_maker.generator.open_api_server" type="service"/>
             <tag name="console.command" />
         </service>
 

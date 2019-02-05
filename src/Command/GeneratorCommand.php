@@ -12,10 +12,10 @@
 namespace Rezsolt\ApiPlatformMakerBundle\Command;
 
 use Rezsolt\ApiPlatformMakerBundle\Entity\OpenApi;
+use Rezsolt\ApiPlatformMakerBundle\Generator\OpenApiServerGenerator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
@@ -29,11 +29,17 @@ use Symfony\Component\Serializer\SerializerInterface;
 final class GeneratorCommand extends Command
 {
     private $serializer;
+    /**
+     * @var OpenApiServerGenerator
+     */
+    private $apiServerGenerator;
 
     public function __construct(
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        OpenApiServerGenerator $apiServerGenerator
     ) {
         $this->serializer = $serializer;
+        $this->apiServerGenerator = $apiServerGenerator;
 
         parent::__construct();
     }
@@ -46,8 +52,7 @@ final class GeneratorCommand extends Command
         $this
             ->setName('make:api')
             ->setDescription('Generate ApiPlatform server from OpenAPI 3.0 documentation')
-            ->addArgument('openapi_doc_path', InputArgument::REQUIRED, 'OpenAPI 3.0 c JSON or yaml file')
-            ->addOption('yaml', 'y', InputOption::VALUE_NONE, 'Dump the documentation in YAML');
+            ->addArgument('openapi_doc_path', InputArgument::REQUIRED, 'OpenAPI 3.0 c JSON or yaml file');
     }
 
     /**
@@ -58,12 +63,16 @@ final class GeneratorCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
-        $openApi = $this->loadDocumentation($input->getArgument('openapi_doc_path'), $input->getOption('yaml') ? 'yaml' : 'json');
+        $openApiDocPath = $input->getArgument('openapi_doc_path');
 
-        // @TODO create/update entities
-        // @TODO add annotations for the path/method settings
-        // @TODO create/update relations
-        // @TODO create custom controller actions for custom resources
+        var_export(pathinfo($openApiDocPath, PATHINFO_EXTENSION));
+
+        $openApi = $this->loadDocumentation(
+            $openApiDocPath,
+            pathinfo($openApiDocPath, PATHINFO_EXTENSION) === 'yaml' ? 'yaml' : 'json'
+        );
+        $this->apiServerGenerator->setOpenApi($openApi)
+            ->generate();
 
         $io->success('Finished');
         $io->text([
