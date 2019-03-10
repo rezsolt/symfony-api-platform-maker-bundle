@@ -21,14 +21,17 @@ final class OpenApi
      * @var string
      */
     private $openapi;
+
     /**
      * @var Info
      */
     private $info;
+
     /**
      * @var Paths
      */
     private $paths;
+
     /**
      * @var Components
      */

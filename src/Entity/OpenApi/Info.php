@@ -13,14 +13,20 @@ namespace Rezsolt\ApiPlatformMakerBundle\Entity\OpenApi;
 
 final class Info
 {
+    /**
+     * @var string
+     */
     private $title;
+
+    /**
+     * @var string
+     */
     private $version;
 
     public function __construct(
         string $title,
         string $version
-    )
-    {
+    ) {
         $this->title = $title;
         $this->version = $version;
     }

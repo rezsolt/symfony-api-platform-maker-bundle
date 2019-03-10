@@ -16,17 +16,25 @@ final class Schema
     /**
      * @var string
      */
+    private $id;
+
+    /**
+     * @var string
+     */
     private $type;
+
     /**
      * @var string
      */
     private $description;
+
     /**
      * @var Properties
      */
     private $properties;
 
     public function __construct(
+        string $id,
         string $type,
         string $description,
         Properties $properties
@@ -34,6 +42,15 @@ final class Schema
         $this->type = $type;
         $this->description = $description;
         $this->properties = $properties;
+        $this->id = $id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
     }
 
     /**

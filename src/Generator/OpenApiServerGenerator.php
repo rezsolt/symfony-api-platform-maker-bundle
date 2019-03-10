@@ -11,6 +11,7 @@
 
 namespace Rezsolt\ApiPlatformMakerBundle\Generator;
 
+use Rezsolt\ApiPlatformMakerBundle\Entity\GeneratorSettings;
 use Rezsolt\ApiPlatformMakerBundle\Entity\OpenApi;
 
 class OpenApiServerGenerator
@@ -18,11 +19,17 @@ class OpenApiServerGenerator
     /**
      * @var OpenApi
      */
-    private $openApi;
+    private $openApiEntity;
+
     /**
      * @var OpenApiEntityGenerator
      */
     private $openApiEntityGenerator;
+
+    /**
+     * @var GeneratorSettings
+     */
+    private $settings;
 
     public function __construct(
         OpenApiEntityGenerator $openApiEntityGenerator
@@ -33,29 +40,45 @@ class OpenApiServerGenerator
     /**
      * @return OpenApi
      */
-    public function getOpenApi(): OpenApi
+    public function getOpenApiEntity(): OpenApi
     {
-        return $this->openApi;
+        return $this->openApiEntity;
     }
 
     /**
-     * @param OpenApi $openApi
+     * @param OpenApi $openApiEntity
      *
      * @return OpenApiServerGenerator
      */
-    public function setOpenApi(OpenApi $openApi): self
+    public function setOpenApiEntity(OpenApi $openApiEntity): self
     {
-        $this->openApi = $openApi;
+        $this->openApiEntity = $openApiEntity;
 
         return $this;
     }
 
+    /**
+     * @return OpenApiServerGenerator
+     */
     public function generate(): self
     {
-        $this->openApiEntityGenerator->setOpenApi($this->openApi)
+        $this->openApiEntityGenerator->setOpenApiEntity($this->openApiEntity)
             ->generate();
 
         // @TODO create custom controller actions for custom resources
+
+        return $this;
+    }
+
+    /**
+     * @param GeneratorSettings $settings
+     *
+     * @return OpenApiServerGenerator
+     */
+    public function setSettings(GeneratorSettings $settings): self
+    {
+        $this->settings = $settings;
+        $this->openApiEntityGenerator->setSettings($settings);
 
         return $this;
     }

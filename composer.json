@@ -14,7 +14,8 @@
     "symfony/framework-bundle": "^3.4|^4.0",
     "symfony/http-kernel": "^3.4|^4.0",
     "symfony/maker-bundle": "^1.11",
-    "api-platform/core": "^2.4"
+    "api-platform/core": "^2.4",
+    "doctrine/orm": "^2.6"
   },
   "autoload": {
     "psr-4": {

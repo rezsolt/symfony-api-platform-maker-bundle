@@ -11,11 +11,13 @@
 
 namespace Rezsolt\ApiPlatformMakerBundle\Command;
 
+use Rezsolt\ApiPlatformMakerBundle\Entity\GeneratorSettings;
 use Rezsolt\ApiPlatformMakerBundle\Entity\OpenApi;
 use Rezsolt\ApiPlatformMakerBundle\Generator\OpenApiServerGenerator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
@@ -29,6 +31,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 final class GeneratorCommand extends Command
 {
     private $serializer;
+
     /**
      * @var OpenApiServerGenerator
      */
@@ -52,7 +55,16 @@ final class GeneratorCommand extends Command
         $this
             ->setName('make:api')
             ->setDescription('Generate ApiPlatform server from OpenAPI 3.0 documentation')
-            ->addArgument('openapi_doc_path', InputArgument::REQUIRED, 'OpenAPI 3.0 c JSON or yaml file');
+            ->addArgument('openapi_doc_path', InputArgument::REQUIRED, 'OpenAPI 3.0 c JSON or yaml file')
+            ->addOption(
+                'path',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'The path where to generate entities when it cannot be guessed'
+            )
+            ->addOption('no-backup', null, InputOption::VALUE_NONE, 'Do not backup existing entities files.')
+            ->addOption('regenerate', null, InputOption::VALUE_NONE, 'Instead of adding new fields, simply generate the methods (e.g. getter/setter) for existing fields')
+            ->addOption('overwrite', null, InputOption::VALUE_NONE, 'Overwrite any existing getter/setter methods');
     }
 
     /**
@@ -64,21 +76,21 @@ final class GeneratorCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $openApiDocPath = $input->getArgument('openapi_doc_path');
-
-        var_export(pathinfo($openApiDocPath, PATHINFO_EXTENSION));
-
         $openApi = $this->loadDocumentation(
             $openApiDocPath,
             pathinfo($openApiDocPath, PATHINFO_EXTENSION) === 'yaml' ? 'yaml' : 'json'
         );
-        $this->apiServerGenerator->setOpenApi($openApi)
+        $this->apiServerGenerator->setOpenApiEntity($openApi)
+            ->setSettings(new GeneratorSettings($input->getOption('regenerate'), $input->getOption('overwrite')))
             ->generate();
 
         $io->success('Finished');
-        $io->text([
-            'Next: It\'s time to create a migration with <comment>make:migration</comment>',
-            '',
-        ]);
+        $io->text(
+            [
+                'Next: It\'s time to create a migration with <comment>make:migration</comment>',
+                '',
+            ]
+        );
     }
 
     private function loadDocumentation(string $filePath, string $format): OpenApi

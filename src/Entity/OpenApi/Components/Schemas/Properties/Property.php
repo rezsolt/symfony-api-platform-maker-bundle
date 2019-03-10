@@ -17,14 +17,17 @@ final class Property
      * @var string
      */
     private $id;
+
     /**
      * @var bool
      */
     private $readOnly;
+
     /**
      * @var string
      */
     private $type;
+
     /**
      * @var string
      */

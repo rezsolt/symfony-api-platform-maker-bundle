@@ -4,10 +4,16 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
+        <service id="api_platform_maker.entity_class_generator"
+            class="Symfony\Bundle\MakerBundle\Doctrine\EntityClassGenerator">
+            <argument id="maker.generator" type="service"/>
+        </service>
 
         <service id="api_platform_maker.generator.open_api_entity"
                  class="Rezsolt\ApiPlatformMakerBundle\Generator\OpenApiEntityGenerator">
             <argument id="maker.generator" type="service"/>
+            <argument id="maker.file_manager" type="service"/>
+            <argument id="api_platform_maker.entity_class_generator" type="service"/>
         </service>
 
         <service id="api_platform_maker.generator.open_api_server"
