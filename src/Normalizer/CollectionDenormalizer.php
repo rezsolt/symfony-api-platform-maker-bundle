@@ -61,7 +61,7 @@ class CollectionDenormalizer implements DenormalizerInterface, DenormalizerAware
         /** @var \ArrayIterator $collection */
         $collection = new $class();
         $classParts = explode('\\', $class);
-        $childClass = $class . '\\' . Inflector::singularize(array_pop($classParts));
+        $childClass = $class.'\\'.Inflector::singularize(array_pop($classParts));
 
         foreach ($data as $id => $itemData) {
             $itemData['id'] = $id;
@@ -83,6 +83,6 @@ class CollectionDenormalizer implements DenormalizerInterface, DenormalizerAware
      */
     public function supportsDenormalization($data, $type, $format = null)
     {
-       return is_subclass_of($type, CollectionInterface::class);
+        return is_subclass_of($type, CollectionInterface::class);
     }
 }
