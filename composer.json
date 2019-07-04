@@ -22,8 +22,27 @@
       "Rezsolt\\ApiPlatformMakerBundle\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "spec\\Rezsolt\\ApiPlatformMakerBundle\\": "spec/"
+    }
+  },
   "require-dev": {
-    "symfony/phpunit-bridge": "^4.2"
+    "symfony/phpunit-bridge": "^4.2",
+    "phpunit/phpunit": "^8",
+    "phpspec/phpspec": "^5.1"
+  },
+  "scripts" : {
+    "post-install-cmd": [
+      "@test"
+    ],
+    "functional-test": "vendor/bin/phpunit",
+    "phpspec": "vendor/bin/phpspec",
+    "unit-test": "@phpspec run",
+    "test": [
+      "@unit-test",
+      "@functional-test"
+    ]
   },
   "minimum-stability": "beta"
 }
