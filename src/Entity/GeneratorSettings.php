@@ -4,8 +4,10 @@ namespace Rezsolt\ApiPlatformMakerBundle\Entity;
 
 /**
  * Class GeneratorSettings.
+ *
+ * @final
  */
-final class GeneratorSettings
+class GeneratorSettings
 {
     /**
      * @var bool
