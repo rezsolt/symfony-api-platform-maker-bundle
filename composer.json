@@ -11,7 +11,7 @@
   ],
   "require": {
     "php": "^7.1.3",
-    "symfony/framework-bundle": "^3.4|^4.0",
+    "symfony/framework-bundle": "^3.4|^4.3",
     "symfony/http-kernel": "^3.4|^4.0",
     "symfony/maker-bundle": "^1.11",
     "api-platform/core": "^2.4",
@@ -24,20 +24,25 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "spec\\Rezsolt\\ApiPlatformMakerBundle\\": "spec/"
+      "spec\\Rezsolt\\ApiPlatformMakerBundle\\": "spec/",
+      "tests\\Rezsolt\\ApiPlatformMakerBundle\\": "tests/",
+      "App\\": "tests/temp_src/"
     }
   },
   "require-dev": {
-    "symfony/phpunit-bridge": "^4.2",
-    "phpunit/phpunit": "^8",
-    "phpspec/phpspec": "^5.1"
+    "phpspec/phpspec": "^5.1",
+    "symfony/phpunit-bridge": "^4.3",
+    "symfony/routing": "^4.3",
+    "sensio/framework-extra-bundle": "^5.4",
+    "symfony/dependency-injection": "^4.3"
   },
   "scripts" : {
     "post-install-cmd": [
       "@test"
     ],
-    "functional-test": "vendor/bin/phpunit",
+    "phpunit": "vendor/bin/simple-phpunit",
     "phpspec": "vendor/bin/phpspec",
+    "functional-test": "@phpunit",
     "unit-test": "@phpspec run",
     "test": [
       "@unit-test",

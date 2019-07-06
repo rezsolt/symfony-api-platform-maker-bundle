@@ -1,0 +1,548 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "",
+        "version": "0.0.0"
+    },
+    "paths": {
+        "\/api\/first_foos": {
+            "get": {
+                "tags": [
+                    "FirstFoo"
+                ],
+                "operationId": "getFirstFooCollection",
+                "summary": "Retrieves the collection of FirstFoo resources.",
+                "responses": {
+                    "200": {
+                        "description": "FirstFoo collection response",
+                        "content": {
+                            "application\/ld+json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#\/components\/schemas\/FirstFoo"
+                                    }
+                                }
+                            },
+                            "application\/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#\/components\/schemas\/FirstFoo"
+                                    }
+                                }
+                            },
+                            "text\/html": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#\/components\/schemas\/FirstFoo"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "description": "The collection page number",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "FirstFoo"
+                ],
+                "operationId": "postFirstFooCollection",
+                "summary": "Creates a FirstFoo resource.",
+                "responses": {
+                    "201": {
+                        "description": "FirstFoo resource created",
+                        "content": {
+                            "application\/ld+json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/FirstFoo"
+                                }
+                            },
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/FirstFoo"
+                                }
+                            },
+                            "text\/html": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/FirstFoo"
+                                }
+                            }
+                        },
+                        "links": {
+                            "GetFirstFooItem": {
+                                "parameters": {
+                                    "id": "$response.body#\/id"
+                                },
+                                "operationId": "getFirstFooItem",
+                                "description": "The `id` value returned in the response can be used as the `id` parameter in `GET \/api\/first_foos\/{id}`."
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application\/ld+json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/FirstFoo"
+                            }
+                        },
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/FirstFoo"
+                            }
+                        },
+                        "text\/html": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/FirstFoo"
+                            }
+                        }
+                    },
+                    "description": "The new FirstFoo resource"
+                }
+            }
+        },
+        "\/api\/first_foos\/{id}": {
+            "get": {
+                "tags": [
+                    "FirstFoo"
+                ],
+                "operationId": "getFirstFooItem",
+                "summary": "Retrieves a FirstFoo resource.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "FirstFoo resource response",
+                        "content": {
+                            "application\/ld+json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/FirstFoo"
+                                }
+                            },
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/FirstFoo"
+                                }
+                            },
+                            "text\/html": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/FirstFoo"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "FirstFoo"
+                ],
+                "operationId": "deleteFirstFooItem",
+                "summary": "Removes the FirstFoo resource.",
+                "responses": {
+                    "204": {
+                        "description": "FirstFoo resource deleted"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "FirstFoo"
+                ],
+                "operationId": "putFirstFooItem",
+                "summary": "Replaces the FirstFoo resource.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "FirstFoo resource updated",
+                        "content": {
+                            "application\/ld+json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/FirstFoo"
+                                }
+                            },
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/FirstFoo"
+                                }
+                            },
+                            "text\/html": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/FirstFoo"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application\/ld+json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/FirstFoo"
+                            }
+                        },
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/FirstFoo"
+                            }
+                        },
+                        "text\/html": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/FirstFoo"
+                            }
+                        }
+                    },
+                    "description": "The updated FirstFoo resource"
+                }
+            }
+        },
+        "\/api\/second_bars": {
+            "get": {
+                "tags": [
+                    "SecondBar"
+                ],
+                "operationId": "getSecondBarCollection",
+                "summary": "Retrieves the collection of SecondBar resources.",
+                "responses": {
+                    "200": {
+                        "description": "SecondBar collection response",
+                        "content": {
+                            "application\/ld+json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#\/components\/schemas\/SecondBar"
+                                    }
+                                }
+                            },
+                            "application\/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#\/components\/schemas\/SecondBar"
+                                    }
+                                }
+                            },
+                            "text\/html": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#\/components\/schemas\/SecondBar"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "description": "The collection page number",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "SecondBar"
+                ],
+                "operationId": "postSecondBarCollection",
+                "summary": "Creates a SecondBar resource.",
+                "responses": {
+                    "201": {
+                        "description": "SecondBar resource created",
+                        "content": {
+                            "application\/ld+json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/SecondBar"
+                                }
+                            },
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/SecondBar"
+                                }
+                            },
+                            "text\/html": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/SecondBar"
+                                }
+                            }
+                        },
+                        "links": {
+                            "GetSecondBarItem": {
+                                "parameters": {
+                                    "id": "$response.body#\/id"
+                                },
+                                "operationId": "getSecondBarItem",
+                                "description": "The `id` value returned in the response can be used as the `id` parameter in `GET \/api\/second_bars\/{id}`."
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application\/ld+json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/SecondBar"
+                            }
+                        },
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/SecondBar"
+                            }
+                        },
+                        "text\/html": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/SecondBar"
+                            }
+                        }
+                    },
+                    "description": "The new SecondBar resource"
+                }
+            }
+        },
+        "\/api\/second_bars\/{id}": {
+            "get": {
+                "tags": [
+                    "SecondBar"
+                ],
+                "operationId": "getSecondBarItem",
+                "summary": "Retrieves a SecondBar resource.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SecondBar resource response",
+                        "content": {
+                            "application\/ld+json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/SecondBar"
+                                }
+                            },
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/SecondBar"
+                                }
+                            },
+                            "text\/html": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/SecondBar"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "SecondBar"
+                ],
+                "operationId": "deleteSecondBarItem",
+                "summary": "Removes the SecondBar resource.",
+                "responses": {
+                    "204": {
+                        "description": "SecondBar resource deleted"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "SecondBar"
+                ],
+                "operationId": "putSecondBarItem",
+                "summary": "Replaces the SecondBar resource.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SecondBar resource updated",
+                        "content": {
+                            "application\/ld+json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/SecondBar"
+                                }
+                            },
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/SecondBar"
+                                }
+                            },
+                            "text\/html": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/SecondBar"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application\/ld+json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/SecondBar"
+                            }
+                        },
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/SecondBar"
+                            }
+                        },
+                        "text\/html": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/SecondBar"
+                            }
+                        }
+                    },
+                    "description": "The updated SecondBar resource"
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "FirstFoo": {
+                "type": "object",
+                "description": "",
+                "properties": {
+                    "id": {
+                        "readOnly": true,
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "SecondBar": {
+                "type": "object",
+                "description": "",
+                "properties": {
+                    "id": {
+                        "readOnly": true,
+                        "type": "integer"
+                    },
+                    "firstFooId": {
+                        "type": "integer"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}

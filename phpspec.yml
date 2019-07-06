@@ -1,1 +1,4 @@
-composer_suite_detection: trues
+suites:
+  api_platform_maker_bundle:
+    namespace: Rezsolt\ApiPlatformMakerBundle
+    psr4_prefix: Rezsolt\ApiPlatformMakerBundle

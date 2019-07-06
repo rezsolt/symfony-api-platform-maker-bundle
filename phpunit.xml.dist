@@ -10,8 +10,7 @@
     <php>
         <ini name="error_reporting" value="-1" />
         <env name="TEST_DATABASE_DSN" value="mysql://root:@127.0.0.1:3306/test_sf_api_platform_maker" />
-        <!-- See #237 -->
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak_vendors" />
+        <env name="KERNEL_CLASS" value="\tests\Rezsolt\ApiPlatformMakerBundle\Fixtures\TestKernel" />
     </php>
 
     <testsuites>

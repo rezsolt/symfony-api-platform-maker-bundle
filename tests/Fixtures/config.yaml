@@ -1,0 +1,6 @@
+parameters:
+  kernel.secret: TestSecret!
+
+framework:
+  router:
+    resource:
