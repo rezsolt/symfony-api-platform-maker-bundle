@@ -7,9 +7,15 @@ namespace Rezsolt\ApiPlatformMakerBundle\Tests\Functional;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\ApplicationTester;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 final class EntityCreationTest extends KernelTestCase
 {
+    /**
+     * @var string
+     */
     private static $examplesPath;
 
     /**
@@ -27,11 +33,17 @@ final class EntityCreationTest extends KernelTestCase
      */
     private static $entityPath;
 
+    /**
+     * @var string
+     */
+    private static $repoPath;
+
     public static function setUpBeforeClass()
     {
         $testPath = realpath(__DIR__.\DIRECTORY_SEPARATOR.'..').\DIRECTORY_SEPARATOR;
         self::$srcPath = $testPath.'temp_src'.\DIRECTORY_SEPARATOR;
         self::$entityPath = self::$srcPath.'Entity'.\DIRECTORY_SEPARATOR;
+        self::$repoPath = self::$srcPath.'Repository'.\DIRECTORY_SEPARATOR;
         self::$examplesPath = $testPath.'Fixtures'.\DIRECTORY_SEPARATOR.'examples'.\DIRECTORY_SEPARATOR;
     }
 
@@ -44,6 +56,7 @@ final class EntityCreationTest extends KernelTestCase
         $application->setAutoExit(false);
 
         $this->tester = new ApplicationTester($application);
+        $this->cleanSrcDirectory();
     }
 
     public function testShouldCreateEntities()
@@ -58,5 +71,23 @@ final class EntityCreationTest extends KernelTestCase
 
         $this->assertFileExists(self::$entityPath.'FirstFoo.php');
         $this->assertFileExists(self::$entityPath.'SecondBar.php');
+    }
+
+    private function cleanSrcDirectory()
+    {
+        $filesystem = new Filesystem();
+        $finder = new Finder();
+        $allPath = [self::$entityPath, self::$repoPath];
+
+        foreach ($allPath as $path) {
+            $finder->files()->in($path);
+
+            if ($finder->hasResults()) {
+                /** @var SplFileInfo $file */
+                foreach ($finder as $file) {
+                    $filesystem->remove($file->getRealPath());
+                }
+            }
+        }
     }
 }
