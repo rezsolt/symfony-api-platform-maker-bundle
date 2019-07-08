@@ -38,16 +38,24 @@ final class EntityCreationTest extends KernelTestCase
      */
     private static $repoPath;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass():void
     {
         $testPath = realpath(__DIR__.\DIRECTORY_SEPARATOR.'..').\DIRECTORY_SEPARATOR;
         self::$srcPath = $testPath.'temp_src'.\DIRECTORY_SEPARATOR;
         self::$entityPath = self::$srcPath.'Entity'.\DIRECTORY_SEPARATOR;
         self::$repoPath = self::$srcPath.'Repository'.\DIRECTORY_SEPARATOR;
         self::$examplesPath = $testPath.'Fixtures'.\DIRECTORY_SEPARATOR.'examples'.\DIRECTORY_SEPARATOR;
+
+        if (!is_dir(self::$entityPath)) {
+            mkdir(self::$entityPath);
+        }
+
+        if (!is_dir(self::$repoPath)) {
+            mkdir(self::$repoPath);
+        }
     }
 
-    protected function setUp()
+    protected function setUp():void
     {
         static::bootKernel();
 
