@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Rezsolt\ApiPlatformMakerBundle\Tests\Functional;
 
+use PHPUnit\Framework\ExpectationFailedException;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\ApplicationTester;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Exception\DirectoryNotFoundException;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -38,8 +41,12 @@ final class EntityCreationTest extends KernelTestCase
      */
     private static $repoPath;
 
-    public static function setUpBeforeClass():void
+    public static function initPath(): void
     {
+        if (self::$srcPath !== null) {
+            return;
+        }
+
         $testPath = realpath(__DIR__.\DIRECTORY_SEPARATOR.'..').\DIRECTORY_SEPARATOR;
         self::$srcPath = $testPath.'temp_src'.\DIRECTORY_SEPARATOR;
         self::$entityPath = self::$srcPath.'Entity'.\DIRECTORY_SEPARATOR;
@@ -55,7 +62,53 @@ final class EntityCreationTest extends KernelTestCase
         }
     }
 
-    protected function setUp():void
+    public static function setUpBeforeClass(): void
+    {
+        self::initPath();
+    }
+
+    public function dataExamples(): \Generator
+    {
+        self::initPath();
+
+        $finder = new Finder();
+        $finder->directories()
+            ->in(self::$examplesPath)
+            ->depth(0);
+
+        if (!$finder->hasResults()) {
+            throw new \LogicException('Missing examples');
+        }
+
+        /** @var SplFileInfo $dir */
+        foreach ($finder as $dir) {
+            if (file_exists($dir->getRealPath().DIRECTORY_SEPARATOR.'openapi.json')) {
+                $documentFile = 'openapi.json';
+            } elseif (file_exists($dir->getRealPath().DIRECTORY_SEPARATOR.'openapi.yaml')) {
+                $documentFile = 'openapi.yaml';
+            } elseif (file_exists($dir->getRealPath().DIRECTORY_SEPARATOR.'openapi.yml')) {
+                $documentFile = 'openapi.yml';
+            } else {
+                throw new \LogicException('Missing OpenApi 3 document in the example folder.');
+            }
+
+            $entityFinder = new Finder();
+            $entityFinder->files()
+                ->in($dir->getRealPath().DIRECTORY_SEPARATOR.'Entity')
+                ->depth(0)
+                ->ignoreDotFiles(true);
+
+            $repoFinder = new Finder();
+            $repoFinder->files()
+                ->in($dir->getRealPath().DIRECTORY_SEPARATOR.'Repository')
+                ->depth(0)
+                ->ignoreDotFiles(true);
+
+            yield [$dir->getFilename(), $documentFile, $entityFinder->getIterator(), $repoFinder->getIterator()];
+        }
+    }
+
+    protected function setUp(): void
     {
         static::bootKernel();
 
@@ -67,18 +120,63 @@ final class EntityCreationTest extends KernelTestCase
         $this->cleanSrcDirectory();
     }
 
-    public function testShouldCreateEntities()
-    {
+    /**
+     * @dataProvider dataExamples
+     *
+     * @param string $exampleDir
+     * @param string $documentFile
+     * @param \Iterator $expectedEntities
+     *
+     * @param \Iterator $expectedRepositories
+     *
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
+     * @throws DirectoryNotFoundException
+     */
+    public function testShouldCreateEntities(
+        string $exampleDir,
+        string $documentFile,
+        \Iterator $expectedEntities,
+        \Iterator $expectedRepositories
+    ) {
         $this->tester->run(
             [
                 'command' => 'make:api',
                 '--path' => self::$entityPath,
-                'openapi_doc_path' => self::$examplesPath.'entities_001'.\DIRECTORY_SEPARATOR.'openapi.json'
+                'openapi_doc_path' => self::$examplesPath.$exampleDir.\DIRECTORY_SEPARATOR.$documentFile,
             ]
         );
 
-        $this->assertFileExists(self::$entityPath.'FirstFoo.php');
-        $this->assertFileExists(self::$entityPath.'SecondBar.php');
+        $examples = [
+            [
+                'expected_files' => $expectedEntities,
+                'generated_path' => self::$entityPath,
+                'example_path' => self::$examplesPath.$exampleDir.\DIRECTORY_SEPARATOR.'Entity'.\DIRECTORY_SEPARATOR,
+            ],
+            [
+                'expected_files' => $expectedRepositories,
+                'generated_path' => self::$repoPath,
+                'example_path' => self::$examplesPath.$exampleDir.\DIRECTORY_SEPARATOR.'Repository'.\DIRECTORY_SEPARATOR,
+            ],
+        ];
+
+        foreach ($examples as $expected) {
+            $finder = new Finder();
+            $finder->files()
+                ->in($expected['example_path'])
+                ->depth(0);
+            /** @var \AppendIterator $foundFiles */
+            $foundFiles = $finder->getIterator();
+
+            $this->assertEquals(\iterator_count($expected['expected_files']), \iterator_count($foundFiles));
+
+            foreach ($expected['expected_files'] as $fileInfo) {
+                $this->assertFileEquals(
+                    $expected['example_path'].$fileInfo->getFilename(),
+                    $expected['generated_path'].$fileInfo->getFilename()
+                );
+            }
+        }
     }
 
     private function cleanSrcDirectory()
